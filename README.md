@@ -4,7 +4,7 @@
 
 Telkom University Purwokerto
 
-## Anggota Tim
+## Anggota Tim "ada ide engga"
 
 - **Ketua:** Nadia Tambunan
 - **Anggota 1:** Aditio Nugroho
