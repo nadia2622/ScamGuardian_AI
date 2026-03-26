@@ -4,7 +4,7 @@
 ═══════════════════════════════════════════════════════════ */
 
 // ── Ganti dengan API Key Google AI Studio kamu ───────────────
-
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 const Guardian = (() => {
   const PAGES = ["home", "checker", "url", "message"];
@@ -19,31 +19,36 @@ const Guardian = (() => {
   ═══════════════════════════════════════════════════════ */
 
   async function askGemini(systemPrompt, userMessage) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+    const url = `https://api.groq.com/openai/v1/chat/completions`;
+
     const res = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+      },
       body: JSON.stringify({
-        contents: [
+        model: "llama-3.3-70b-versatile",
+        messages: [
           {
             role: "user",
-            parts: [{ text: `${systemPrompt}\n\n${userMessage}` }],
+            content: `${systemPrompt}\n\n${userMessage}`,
           },
         ],
-        generationConfig: {
-          temperature: 0.2,
-          maxOutputTokens: 1000,
-        },
+        temperature: 0.2,
+        max_tokens: 1000,
       }),
     });
+
     if (!res.ok) {
       const err = await res.json();
       throw new Error(
-        `Gemini API error: ${res.status} — ${err?.error?.message || "Unknown"}`,
+        `Groq API error: ${res.status} — ${err?.error?.message || "Unknown"}`,
       );
     }
+
     const data = await res.json();
-    return data.candidates[0].content.parts[0].text;
+    return data.choices[0].message.content;
   }
 
   function parseJSON(text) {
@@ -825,6 +830,8 @@ Format JSON:
     init,
   };
 })();
+
+window.Guardian = Guardian;
 
 window.addEventListener("popstate", (e) => {
   const page = e.state?.page || "home";

@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "main": "script.js",
   "scripts": {
-    "dev": "npx @tailwindcss/cli -i ./src/input.css -o ./dist/output.css --watch",
-    "build": "npx @tailwindcss/cli -i ./src/input.css -o ./dist/output.css --minify"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tw": "npx @tailwindcss/cli -i ./src/input.css -o ./dist/output.css --watch"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +15,8 @@
   "devDependencies": {
     "@tailwindcss/cli": "^4.2.1",
     "tailwindcss": "^4.2.1"
+  },
+  "dependencies": {
+    "vite": "^8.0.3"
   }
 }
